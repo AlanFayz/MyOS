@@ -1,7 +1,10 @@
 #include "screen.h"
+#include "../Kernel/memory.h"
+
+#define VGA_ADDRESS 0xB8000
 
 static screen_t screen = {
-      .framebuffer = (uint8_t*)0xb8000,
+      .framebuffer = (uint8_t*)VGA_ADDRESS,
       .rows = 20,
       .columns = 80,
       .cursor = {0, 0},
@@ -52,7 +55,10 @@ void cursor_increment()
 {
       screen.cursor.column++;
       if(screen.cursor.column >= screen.columns)
+      {
+          screen_shift_up();
           screen.cursor.row++;
+      }
 
       screen.cursor.column %= screen.columns;
       screen.cursor.row %= screen.rows;
@@ -89,5 +95,36 @@ void screen_print_string(const char* str, vga_color_t color)
     for(; *str != '\0'; str++)
     {
           screen_put_char(*str, color);
+    }
+
+}
+
+void screen_shift_down()
+{
+    for(uint16_t col = 0; col < screen.columns; col++)
+    {
+        display_byte(' ', col, 0, 0x00);
+    }
+
+    for (int32_t row = (int32_t)screen.rows - 1; row > 0; row--)
+    {
+        memcpy(screen.framebuffer + (row * screen.columns) * 2,
+               screen.framebuffer + ((row - 1) * screen.columns) * 2,
+               screen.columns * 2);
+    }
+}
+
+void screen_shift_up()
+{
+    for(uint16_t col = 0; col < screen.columns; col++)
+    {
+        display_byte(' ', col, screen.rows - 1, 0x00);
+    }
+
+    for (int32_t row = 1; row < screen.rows; row++)
+    {
+        memcpy(screen.framebuffer + ((row - 1) * screen.columns) * 2,
+               screen.framebuffer + (row  * screen.columns) * 2,
+               screen.columns * 2);
     }
 }

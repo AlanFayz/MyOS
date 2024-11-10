@@ -37,7 +37,6 @@ BEGIN_PM:
     mov ebx, MSG_PROT_MODE
     call print_string_pm
     call KERNEL_OFFSET ; call main in kernel.c
-    jmp $
 
 
 BOOT_DRIVE db 0

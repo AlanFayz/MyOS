@@ -2,9 +2,10 @@
 
 #include <stdint.h>
 
-
-#define SCREEN_CONTROL_IO_PORT ((uint16_t)0x3D4)
-#define SCREEN_DATA_IO_PORT    ((uint16_t)0x3D5)
+#define SCREEN_CONTROL_IO_PORT   ((uint16_t)0x3D4)
+#define SCREEN_DATA_IO_PORT      ((uint16_t)0x3D5)
+#define KEYBOARD_CONTROL_IO_PORT ((uint16_t)0x64)
+#define KEYBOARD_DATA_IO_PORT    ((uint16_t)0x60)
 
 uint8_t  port_byte_in(uint16_t port);
 uint16_t port_word_in(uint16_t port);
