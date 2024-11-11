@@ -3,7 +3,12 @@
 #include "low_level.h"
 #include "../Kernel/bool.h"
 
-uint8_t get_key();
-uint8_t get_key_raw();
-uint8_t map_port_to_ascii(uint8_t port);
+typedef struct {
+    uint8_t scancode_ascii;
+    uint8_t scancode;
+    bool pressed;
+    bool released;
+} key_t;
+
+key_t get_key();
 bool key_detected();

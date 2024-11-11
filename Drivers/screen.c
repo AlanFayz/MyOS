@@ -56,12 +56,17 @@ void cursor_increment()
       screen.cursor.column++;
       if(screen.cursor.column >= screen.columns)
       {
-          screen_shift_up();
           screen.cursor.row++;
+          screen_shift_up();
+
+
+          if(screen.cursor.row >= screen.rows)
+          {
+             screen.cursor.row--;
+          }
       }
 
       screen.cursor.column %= screen.columns;
-      screen.cursor.row %= screen.rows;
 
       cursor_set(screen.cursor.row, screen.cursor.column);
 }
@@ -89,6 +94,60 @@ void screen_put_char(int8_t c, vga_color_t color)
     display_byte(c, screen.cursor.column, screen.cursor.row, color);
     cursor_increment();
 }
+
+void screen_put_int(int32_t value, vga_color_t color)
+{
+    if(value < 0)
+    {
+    	screen_put_char('-', color);
+        value = -value;
+    }
+
+    int32_t digits[10] = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+
+    uint32_t index = 0;
+    while(value >= 1 && index < 10)
+    {
+          int32_t remainder = value % 10;
+          value /= 10;
+
+          digits[index++] = remainder;
+    }
+
+    for(int32_t i = 9; i >= 0; --i)
+    {
+        if(digits[i] == -1)
+            continue;
+
+        char character = digits[i] + '0';
+        screen_put_char(character, color);
+    }
+}
+
+void screen_put_hex(uint32_t value, vga_color_t color)
+{
+    uint32_t bit_count = 32;
+
+    while(bit_count > 0)
+    {
+          bit_count -= 4;
+          uint32_t temp = value >> bit_count;
+          temp &= 0x0000000F;
+
+          char val = 0;
+          if(temp < 10)
+          {
+              val = (char)temp + '0';
+          }
+          else
+          {
+             val = (char)temp + 'A' - 10;
+          }
+
+          screen_put_char(val, color);
+    }
+}
+
 
 void screen_print_string(const char* str, vga_color_t color)
 {
@@ -128,3 +187,4 @@ void screen_shift_up()
                screen.columns * 2);
     }
 }
+
