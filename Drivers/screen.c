@@ -11,7 +11,7 @@ static screen_t screen = {
       .white_on_black = 0x0F
 };
 
-static void display_byte(int8_t character, uint32_t col, uint32_t row, vga_color_t color)
+static void display_byte(int8_t character, uint32_t col, uint32_t row, color_t color)
 {
     if (col >= screen.columns || row >= screen.rows)
         return;
@@ -71,7 +71,7 @@ void cursor_increment()
       cursor_set(screen.cursor.row, screen.cursor.column);
 }
 
-void screen_clear(vga_color_t color)
+void screen_clear(color_t color)
 {
     for(uint16_t i = 0; i < screen.rows; i++)
     {
@@ -89,13 +89,13 @@ cursor_t screen_get_cursor()
     return screen.cursor;
 }
 
-void screen_put_char(int8_t c, vga_color_t color)
+void screen_put_char(int8_t c, color_t color)
 {
     display_byte(c, screen.cursor.column, screen.cursor.row, color);
     cursor_increment();
 }
 
-void screen_put_int(int32_t value, vga_color_t color)
+void screen_put_int(int32_t value, color_t color)
 {
     if(value < 0)
     {
@@ -124,7 +124,7 @@ void screen_put_int(int32_t value, vga_color_t color)
     }
 }
 
-void screen_put_hex(uint32_t value, vga_color_t color)
+void screen_put_hex(uint32_t value, color_t color)
 {
     uint32_t bit_count = 32;
 
@@ -149,7 +149,7 @@ void screen_put_hex(uint32_t value, vga_color_t color)
 }
 
 
-void screen_print_string(const char* str, vga_color_t color)
+void screen_print_string(const char* str, color_t color)
 {
     for(; *str != '\0'; str++)
     {
