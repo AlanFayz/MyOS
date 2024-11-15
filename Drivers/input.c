@@ -2,11 +2,6 @@
 
 #define KEY_RELEASED_THRESOLD 129
 
-static uint8_t get_key_raw()
-{
-  	return port_byte_in(KEYBOARD_DATA_IO_PORT);
-}
-
 //for now only with qwerty american layout and doesn't deal with shifts
 static uint8_t map_port_to_ascii(uint8_t port)
 {

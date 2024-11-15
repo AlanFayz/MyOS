@@ -1,25 +1,24 @@
 #include "../Drivers/screen.h"
 #include "../Drivers/input.h"
 
+#include "pit.h"
 #include "memory.h"
 
-#define true 1
-#define false 0
+void kernel_init()
+{
+    screen_clear(0);
+    //TODO: need to set up interrupt discriptor table
+    //pit_init(100);
+
+    //enable_interrupts();
+}
 
 void main()
 {
-    screen_clear(0x00);
+    kernel_init();
 
     while(true)
     {
-      	if(key_detected())
-    	{
-            key_t key = get_key();
-
-            if(key.pressed)
-                screen_put_char(key.scancode_ascii, 0x0);
-
-    	}
     }
 }
 

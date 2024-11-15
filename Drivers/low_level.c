@@ -23,3 +23,23 @@ void port_word_out(uint16_t port, uint16_t data)
 {
     __asm__("out %%ax, %%dx" : : "a" (data), "d" (port));
 }
+
+void halt()
+{
+	__asm__("hlt");
+}
+
+void pause()
+{
+  	__asm__("pause");
+}
+
+void enable_interrupts()
+{
+    __asm__("sti");
+}
+
+void disable_interrupts()
+{
+    __asm__("cli");
+}

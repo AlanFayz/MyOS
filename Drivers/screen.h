@@ -2,7 +2,9 @@
 
 #include "low_level.h"
 
-typedef uint8_t vga_color_t;
+typedef uint8_t  vga_color_t;
+typedef uint16_t vesa_color_t;
+
 typedef vga_color_t color_t;
 
 typedef struct {
