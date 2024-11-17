@@ -9,7 +9,7 @@ void kernel_init()
     screen_clear(0);
     idt_init();
 
-    screen_print_string("kernel has initialized", 0);
+    screen_print_string("Kernel Has Initialized\n", 0);
 
     int val = 10 / 0;
 }

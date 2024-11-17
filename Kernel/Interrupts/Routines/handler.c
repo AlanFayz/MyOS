@@ -41,6 +41,7 @@ void isr_handler(const interrupt_frame_t* frame)
     if(frame->int_number < 31)
     {
         screen_print_string(exception_messages[frame->int_number], 0);
+        screen_put_char('\n', 0);
         halt();
     }
 }

@@ -91,6 +91,12 @@ cursor_t screen_get_cursor()
 
 void screen_put_char(int8_t c, color_t color)
 {
+   if (c == '\n')
+    {
+        cursor_set(screen.cursor.row + 1, 0);
+        return;
+    }
+
     display_byte(c, screen.cursor.column, screen.cursor.row, color);
     cursor_increment();
 }
@@ -173,7 +179,7 @@ void screen_print_string(const char* str, color_t color)
 {
     for(; *str != '\0'; str++)
     {
-          screen_put_char(*str, color);
+        screen_put_char(*str, color);
     }
 
 }
