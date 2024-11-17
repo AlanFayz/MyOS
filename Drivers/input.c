@@ -26,8 +26,6 @@ key_t get_key()
     return key;
 }
 
-
-
 bool key_detected()
 {
     uint8_t status = port_byte_in(KEYBOARD_CONTROL_IO_PORT);

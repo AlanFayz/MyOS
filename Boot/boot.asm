@@ -10,6 +10,10 @@ start:
     call print
     call print_nl
 
+    mov dx, CODE_SEG
+    call print_hex
+    call print_nl
+
     call load_kernel
     call switch_to_pm
     jmp $
