@@ -59,29 +59,8 @@ ISR_NO_ERROR_CODE 177
 
 extern isr_handler
 isr_common:
-    pusha
-    mov eax, ds
-    push eax
-    mov eax, cr2           
-    push eax
-
-    mov ax, 0x10
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
-
     push esp
     call isr_handler
-
     add esp, 8
-    pop ebx
-    mov ds, bx
-    mov es, bx
-    mov fs, bx
-    mov gs, bx
-
-    popa
-    
     sti
     iret

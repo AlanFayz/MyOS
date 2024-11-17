@@ -97,6 +97,12 @@ void screen_put_char(int8_t c, color_t color)
 
 void screen_put_int(int32_t value, color_t color)
 {
+    if(value == 0)
+    {
+        screen_put_char('0', color);
+        return;
+    }
+
     if(value < 0)
     {
     	screen_put_char('-', color);

@@ -10,6 +10,8 @@ void kernel_init()
     idt_init();
 
     screen_print_string("kernel has initialized", 0);
+
+    int val = 10 / 0;
 }
 
 void main()

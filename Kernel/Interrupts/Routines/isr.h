@@ -3,11 +3,7 @@
 #include "bool.h"
 
 typedef struct {
-    uint32_t cr2;
-    uint32_t ds;
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    uint32_t int_number, error_code;
-    uint32_t eip, csm, eflags, useresp, ss;
+    uint32_t error_code, int_number;
 } interrupt_frame_t;
 
 extern void isr0();
