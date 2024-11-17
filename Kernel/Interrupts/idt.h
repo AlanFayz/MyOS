@@ -31,3 +31,6 @@ typedef enum {
 } PIC;
 
 void idt_init();
+
+
+

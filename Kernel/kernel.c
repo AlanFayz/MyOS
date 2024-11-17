@@ -7,16 +7,19 @@
 void kernel_init()
 {
     screen_clear(0);
-    //idt_init();
+    idt_init();
+
+    screen_print_string("kernel has initialized", 0);
 }
 
 void main()
 {
     kernel_init();
 
+    
+
     while(true)
     {
-        screen_put_char('a', 0);
         halt();
     }
 }
