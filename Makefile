@@ -1,25 +1,18 @@
-C_SOURCES   = $(wildcard Kernel/*.c Drivers/*.c Kernel/Interrupts/*.c)
-ASM_SOURCES = $(wildcard Kernel/*.asm Drivers/*.asm Kernel/Interrupts/*.asm)
-HEADERS     = $(wildcard Kernel/*.h Drivers/*.h Kernel/Interrupts/*.h)
+C_SOURCES = $(wildcard Kernel/*.c Drivers/*.c)
+HEADERS   = $(wildcard Kernel/*.h Drivers/*.h)
+
+OBJ = ${C_SOURCES:.c=.o}
 
 INCLUDE_DIRS = Kernel Drivers
-
-C_OBJ   = ${C_SOURCES:.c=.o}
-ASM_OBJ = ${ASM_SOURCES:.asm=.o}
-
-OBJ = ${C_OBJ} ${ASM_OBJ}
-
-CFLAGS = -g -ffreestanding $(foreach dir, $(INCLUDE_DIRS), -I$(dir))
-
-CFLAGS_ISR = -g -ffreestanding $(foreach dir, $(INCLUDE_DIRS), -I$(dir)) -mgeneral-regs-only
+CFLAGS = -g $(foreach dir, $(INCLUDE_DIRS), -I$(dir))
 
 os-image.bin: Boot/boot.bin kernel.bin
 	cat $^ > os-image.bin
 
-kernel.bin: Boot/kernel_entry.o ${OBJ}
+kernel.bin: Kernel/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
 
-kernel.elf: Boot/kernel_entry.o ${OBJ}
+kernel.elf: Kernel/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
 run: os-image.bin
