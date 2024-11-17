@@ -60,9 +60,9 @@ ISR_NO_ERROR_CODE 177
 extern isr_handler
 isr_common:
     pusha
-    mov ax, ds
+    mov eax, ds
     push eax
-    mov eax, cr2           ; CR2 might not always be valid; ensure this is correct.
+    mov eax, cr2           
     push eax
 
     mov ax, 0x10
@@ -75,12 +75,13 @@ isr_common:
     call isr_handler
 
     add esp, 8
-    pop eax
-    mov ds, ax
-    mov es, ax
-    mov fs, ax
-    mov gs, ax
+    pop ebx
+    mov ds, bx
+    mov es, bx
+    mov fs, bx
+    mov gs, bx
 
     popa
+    
     sti
     iret

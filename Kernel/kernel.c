@@ -16,8 +16,6 @@ void main()
 {
     kernel_init();
 
-    
-
     while(true)
     {
         halt();

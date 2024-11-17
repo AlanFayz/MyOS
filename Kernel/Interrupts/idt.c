@@ -3,6 +3,7 @@
 #include "low_level.h"
 #include "Routines/isr.h"
 #include "memory.h"
+#include "screen.h"
 
 #define DESCRIPTOR_TABLE_COUNT 256
 
@@ -14,13 +15,11 @@ static void create_idt_entry(int32_t index, uint32_t handler_address, uint16_t s
     if(index >= DESCRIPTOR_TABLE_COUNT)
         return;
 
-    idt_entrys[index].offset_1 = handler_address & 0x0000FFFF;
+    idt_entrys[index].offset_1 = handler_address & 0xFFFF;
+    idt_entrys[index].offset_2 = (handler_address >> 16) & 0xFFFF;
+    idt_entrys[index].type_attributes = type_attributes | 0x60;
     idt_entrys[index].selector = selector;
     idt_entrys[index].zero     = 0;
-    idt_entrys[index].type_attributes = type_attributes | 0x60;
-    idt_entrys[index].offset_2 = (handler_address >> 16) & 0x0000FFFF;
-
-    idt_entrys[index].type_attributes |= IDT_FLAG_PRESENT;
 }
 
 // programmable interrupt computer
@@ -88,7 +87,7 @@ static void setup_interrupt_service_routine_entrys()
 
 static void idt_flush()
 {
-    __asm__("lidt (%0)" : : "r" (&idt_pointer));
+    __asm__("lidt (%0)" : : "r" ((uint32_t)&idt_pointer));
     __asm__("sti");
 }
 

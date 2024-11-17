@@ -18,8 +18,9 @@ kernel.bin: Boot/kernel_entry.o ${OBJ}
 kernel.elf: Boot/kernel_entry.o ${OBJ}
 	i386-elf-ld -o $@ -Ttext 0x1000 $^
 
+
 run: os-image.bin
-	qemu-system-i386 -fda os-image.bin
+	qemu-system-i386 -d int -fda os-image.bin
 
 debug: os-image.bin kernel.elf
 	qemu-system-i386 -kernel kernel.elf -S -s

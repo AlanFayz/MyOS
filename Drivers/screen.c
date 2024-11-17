@@ -57,7 +57,7 @@ void cursor_increment()
       if(screen.cursor.column >= screen.columns)
       {
           screen.cursor.row++;
-          screen_shift_up();
+          //screen_shift_up();
 
 
           if(screen.cursor.row >= screen.rows)
@@ -148,6 +148,20 @@ void screen_put_hex(uint32_t value, color_t color)
     }
 }
 
+void screen_put_bin(uint32_t value, color_t color)
+{
+    uint32_t bit_count = 32;
+
+    while(bit_count > 0)
+    {
+        bit_count -= 1;
+        uint32_t temp = value >> bit_count;
+        temp &= 0x00000001;
+
+        char val = (char)temp + '0';
+        screen_put_char(val, color);
+    }
+}
 
 void screen_print_string(const char* str, color_t color)
 {

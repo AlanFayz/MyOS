@@ -29,6 +29,7 @@ void     screen_clear(color_t color);
 void     screen_put_char(int8_t c, color_t color);
 void     screen_put_int(int32_t value, color_t color);
 void     screen_put_hex(uint32_t value, color_t color);
+void     screen_put_bin(uint32_t value, color_t color);
 void     screen_print_string(const char* str, color_t color);
 void     screen_shift_down();
 void     screen_shift_up();
