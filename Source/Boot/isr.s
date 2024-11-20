@@ -1,10 +1,12 @@
 [bits 32]
 
+%define KERNEL_DATA_SEG 0x10
+
 %macro ISR_NO_ERROR_CODE 1
     global isr%1
     isr%1:
         cli
-        push dword 0         ; Push dummy error code.
+        push dword 0      
         push dword %1        ; Push interrupt number.
         jmp isr_common
 %endmacro
@@ -59,8 +61,33 @@ ISR_NO_ERROR_CODE 177
 
 extern isr_handler
 isr_common:
-    push esp
-    call isr_handler
+    pusha                  
+
+    mov eax, ds 
+    push eax 
+
+    mov eax, cr2 
+    push eax 
+
+    mov ax, KERNEL_DATA_SEG
+    mov ds, ax 
+    mov es, ax 
+    mov fs, ax 
+    mov gs, ax            
+    
+    push esp                
+    call isr_handler        
+
     add esp, 8
-    sti
-    iret
+    pop ebx 
+
+    mov ds, bx 
+    mov es, bx 
+    mov fs, bx 
+    mov gs, bx
+
+    popa 
+
+    add esp, 8             
+    sti 
+    iret                    

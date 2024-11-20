@@ -1,39 +1,35 @@
-C_SOURCES   = $(wildcard Kernel/*.c    Drivers/*.c   Kernel/Interrupts/*.c    Kernel/Interrupts/Routines/*.c)
-ASM_SOURCES = $(wildcard Kernel/*.asm  Drivers/*.asm Kernel/Interrupts/*.asm  Kernel/Interrupts/Routines/*.asm)
-HEADERS     = $(wildcard Kernel/*.h    Drivers/*.h   Kernel/Interrupts/*.h    Kernel/Interrupts/Routines/*.h)
+C_SOURCES   = $(wildcard Source/Kernel/*.c  Source/Boot/*.c Source/Common/*.c)
+ASM_SOURCES = $(wildcard Source/Kernel/*.s  Source/Boot/*.s Source/Common/*.s)
+HEADERS     = $(wildcard Source/Kernel/*.h  Source/Boot/*.h Source/Common/*.h)
 
 C_OBJ   = ${C_SOURCES:.c=.o}
-ASM_OBJ = ${ASM_SOURCES:.asm=.o}
+ASM_OBJ = ${ASM_SOURCES:.s=.o}
 OBJ     = $(C_OBJ) $(ASM_OBJ)
 
-INCLUDE_DIRS = Kernel Drivers
-CFLAGS = -g $(foreach dir, $(INCLUDE_DIRS), -I$(dir))
-
-os-image.bin: Boot/boot.bin kernel.bin
-	cat $^ > os-image.bin
-
-kernel.bin: Boot/kernel_entry.o ${OBJ}
-	i386-elf-ld -o $@ -Ttext 0x1000 $^ --oformat binary
-
-kernel.elf: Boot/kernel_entry.o ${OBJ}
-	i386-elf-ld -o $@ -Ttext 0x1000 $^
-
-
-run: os-image.bin
-	qemu-system-i386 -fda os-image.bin
-
-debug: os-image.bin kernel.elf
-	qemu-system-i386 -kernel kernel.elf -S -s
+INCLUDE_DIRS = Source 
+CFLAGS     = -g -ffreestanding -fno-stack-protector -fno-builtin $(addprefix -I, $(INCLUDE_DIRS))
+ASM_FLAGS  = -f elf32
+LINK_FLAGS = -T linker.ld 
 
 %.o: %.c ${HEADERS}
-	i386-elf-gcc ${CFLAGS} -ffreestanding -c $< -o $@
+	i386-elf-gcc ${CFLAGS} -c $< -o $@
 
-%.o: %.asm
-	nasm $< -f elf -o $@
+%.o: %.s
+	nasm $< ${ASM_FLAGS} -o $@
 
-%.bin: %.asm
-	nasm $< -f bin -o $@
+Output/boot/kernel: ${OBJ}
+	i386-elf-ld ${LINK_FLAGS} -o $@ ${OBJ}
 
-clean:
-	rm -rf *.bin *.dis *.o os-image.bin *.elf
-	rm -rf Kernel/*.o Boot/*.bin Drivers/*.o Boot/*.o Kernel/Interrupts/*.o Kernel/Interrupts/Routines/*.o
+Output/boot/MyOS.iso: Output/boot/kernel  
+	grub-mkrescue /usr/lib/grub/i386-pc -o $@ Output
+
+run: Output/boot/MyOS.iso 
+	qemu-system-i386  Output/boot/MyOS.iso 
+
+clean: 
+	rm -rf *.bin *.dis *.o *.elf
+	rm -rf ${OBJ}
+	rm Output/boot/kernel 
+	rm Output/boot/MyOS.iso 
+
+run_and_clean: run clean

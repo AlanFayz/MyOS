@@ -1,5 +1,6 @@
 #include "screen.h"
-#include "../Kernel/memory.h"
+
+#include "Common/memory.h"
 
 #define VGA_ADDRESS 0xB8000
 

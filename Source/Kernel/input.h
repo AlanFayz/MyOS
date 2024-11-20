@@ -1,7 +1,7 @@
 #pragma once
 
-#include "low_level.h"
-#include "../Kernel/bool.h"
+#include "Common/low_level.h"
+#include "Common/bool.h"
 
 typedef struct {
     uint8_t scancode_ascii;

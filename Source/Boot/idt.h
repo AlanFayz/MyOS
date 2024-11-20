@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../bool.h"
+#include "Common/bool.h"
 
 
 typedef struct {
@@ -30,7 +30,6 @@ typedef enum {
     PIC_INIT_MODE = 0x11
 } PIC;
 
-void idt_init();
 
 
 

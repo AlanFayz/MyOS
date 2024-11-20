@@ -1,5 +1,6 @@
 #include "isr.h"
-#include "screen.h"
+
+#include "Kernel/screen.h"
 
 const char* exception_messages[] = {
     "Division By Zero",
@@ -42,6 +43,7 @@ void isr_handler(const interrupt_frame_t* frame)
     {
         screen_print_string(exception_messages[frame->int_number], 0);
         screen_put_char('\n', 0);
-        halt();
+        screen_put_int(frame->error_code, 0);
+        screen_put_char('\n', 0);
     }
 }
