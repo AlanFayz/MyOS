@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "compare": "c",
-        "cstdint": "c",
-        "screen.h": "c"
-    }
-}
