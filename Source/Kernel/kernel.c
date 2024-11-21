@@ -3,4 +3,5 @@
 
 void kernel_start()
 {
+    printf("hello %i", 5);
 }

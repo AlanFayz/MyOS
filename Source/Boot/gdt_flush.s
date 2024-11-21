@@ -1,5 +1,7 @@
 [bits 32]
+
 global gdt_flush
+global tss_flush 
 
 gdt_flush:
     mov eax, [esp + 4]
@@ -16,3 +18,8 @@ gdt_flush:
 
 .flush:
     ret  
+
+tss_flush:
+    mov ax, 0x2B
+    ltr ax 
+    ret

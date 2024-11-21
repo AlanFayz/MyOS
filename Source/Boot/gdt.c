@@ -1,9 +1,15 @@
 #include "gdt.h"
 
-#define GDT_DESCRIPTOR_ENTRY_SIZE 5
+#define GDT_DESCRIPTOR_ENTRY_SIZE 6
+
+#include "Common/memory.h"
 
 static gdt_descriptor_entry_t   gdt_descriptor_entries[GDT_DESCRIPTOR_ENTRY_SIZE];
 static gdt_descriptor_pointer_t gdt_descriptor_pointer;
+static tss_entry_t tss_entry;
+
+extern void gdt_flush(uint32_t);
+extern void tss_flush();
 
 void create_null_gdt_entry(uint8_t index)
 {
@@ -42,7 +48,24 @@ void create_gdt_entry(uint8_t index, uint32_t limit, uint32_t address, uint8_t a
     gdt_descriptor_entries[index].available              = flags & 0x01;
 }
 
-extern void gdt_flush(uint32_t);
+
+
+void write_tss(uint32_t index, uint32_t ss0, uint32_t esp0)
+{
+    uint32_t base = (uint32_t)&tss_entry;
+    uint32_t limit = base + sizeof(tss_entry);
+
+    create_gdt_entry(index, base, limit, 0xE9, 0);
+    memset(&tss_entry, 0, sizeof(tss_entry));
+
+    tss_entry.ss0  = ss0;
+    tss_entry.esp0 = esp0;
+
+    tss_entry.cs = 0x08 | 0x3;
+    tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x10 | 0x3;
+
+}
+
 
 void init_gdt()
 {
@@ -54,6 +77,8 @@ void init_gdt()
     create_gdt_entry(2, 0xFFFFFFFF, 0, 0x92, 0xCF); //kernel data segment
     create_gdt_entry(3, 0xFFFFFFFF, 0, 0xFA, 0xCF); //user code segment
     create_gdt_entry(4, 0xFFFFFFFF, 0, 0xF2, 0xCF); //user data segment
+    write_tss(5, 0x10, 0);
 
     gdt_flush(&gdt_descriptor_pointer);
+    tss_flush();
 }

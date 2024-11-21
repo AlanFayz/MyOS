@@ -24,7 +24,7 @@ Output/boot/MyOS.iso: Output/boot/kernel
 	grub-mkrescue /usr/lib/grub/i386-pc -o $@ Output
 
 run: Output/boot/MyOS.iso 
-	qemu-system-i386  Output/boot/MyOS.iso 
+	qemu-system-i386 Output/boot/MyOS.iso 
 
 clean: 
 	rm -rf *.bin *.dis *.o *.elf

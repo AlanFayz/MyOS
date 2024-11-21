@@ -2,6 +2,8 @@
 
 #include "Common/memory.h"
 
+#include <stdarg.h>
+
 #define VGA_ADDRESS 0xB8000
 
 static screen_t screen = {
@@ -169,7 +171,7 @@ void screen_put_bin(uint32_t value, color_t color)
     {
         bit_count -= 1;
         uint32_t temp = value >> bit_count;
-        temp &= 0x00000001;
+        temp &= 0x1;
 
         char val = (char)temp + '0';
         screen_put_char(val, color);
@@ -215,3 +217,57 @@ void screen_shift_up()
     }
 }
 
+void printf(const char* fmt, ...)
+{
+    va_list va_ptr;
+    va_start(va_ptr, fmt);
+
+    for(char* ptr = fmt; *ptr != '\0'; ptr++)
+    {
+        if(*ptr != '%')
+        {
+            screen_put_char(*ptr, 0);
+            continue;
+        }
+
+        char next = *(++ptr);
+
+        switch (next)
+        {
+            case 'i':
+            {
+                int32_t arg = va_arg(va_ptr, int);
+                screen_put_int(arg, 0);
+                break;
+            }
+            case 's':
+            {
+                const char* arg = va_arg(va_ptr, const char*);
+                screen_print_string(arg, 0);
+                break;
+            }
+            case 'b':
+            {
+                uint32_t arg = va_arg(va_ptr, uint32_t);
+                screen_put_bin(arg, 0);
+                break;
+            }
+            case 'h':
+            {
+                uint32_t arg = va_arg(va_ptr, uint32_t);
+                screen_put_hex(arg, 0);
+                break;
+            }
+            case 'c':
+            {
+                char arg = (char)va_arg(va_ptr, int);
+                screen_put_char(arg, 0);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    va_end(va_ptr);
+}

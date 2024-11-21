@@ -33,3 +33,5 @@ void     screen_put_bin(uint32_t value, color_t color);
 void     screen_print_string(const char* str, color_t color);
 void     screen_shift_down();
 void     screen_shift_up();
+
+void printf(const char* fmt, ...);
