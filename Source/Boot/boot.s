@@ -4,10 +4,12 @@
 
 %define GRAPHICS_MODE 0
 
-%define MULTIBOOT_MAGIC_NUMBER 0x1BADB002
+; magic number lets multiboot know this is a multiboot header
+%define MULTIBOOT_MAGIC_NUMBER 0x1BADB002 
 %define MULTIBOOT_FLAGS (VIDINFO)
 %define MULTIBOOT_CHECKSUM -(MULTIBOOT_MAGIC_NUMBER + MULTIBOOT_FLAGS) 
 
+; we want to request this specific vesa mode.
 %define WIDTH  1024 
 %define HEIGHT 768 
 %define DEPTH  32
@@ -36,19 +38,20 @@ section .text
     extern init_idt
 
     start:
-        cli 
+        cli ; clear any previous interrupts
 
         mov esp, stack_top 
-
+    
+        ; resets eflags register
         push 0
         popf
 
-        push ebx ; multiboot header pointer
+        push ebx ; multiboot information struct pointer
         push eax ; multiboot magic number
 
-        call init_gdt
-        call init_idt
-        call init_kernel
+        call init_gdt     ; global descriptor table
+        call init_idt     ; interrupt descriptor table
+        call init_kernel  
 
         popf 
         popf

@@ -26,6 +26,9 @@ Output/boot/MyOS.iso: Output/boot/kernel
 run: Output/boot/MyOS.iso 
 	qemu-system-i386 Output/boot/MyOS.iso 
 
+run_d: Output/boot/MyOS.iso 
+	qemu-system-i386 -s -S Output/boot/MyOS.iso 
+
 clean: 
 	rm -rf *.bin *.dis *.o *.elf
 	rm -rf ${OBJ}
@@ -33,3 +36,4 @@ clean:
 	rm Output/boot/MyOS.iso 
 
 run_and_clean: run clean
+run_and_clean_d: run_d clean

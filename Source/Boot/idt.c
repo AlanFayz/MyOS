@@ -4,7 +4,7 @@
 #include "Common/memory.h"
 #include "Kernel/screen.h"
 
-#include "isr.h"
+#include "Common/Interrupts/isr.h"
 
 #define DESCRIPTOR_TABLE_COUNT 256
 
@@ -84,6 +84,24 @@ static void setup_interrupt_service_routine_entrys()
     create_idt_entry(30, (uint32_t)isr30, IDT_FLAG_CODE_SEGMENT, flags);
     create_idt_entry(31, (uint32_t)isr31, IDT_FLAG_CODE_SEGMENT, flags);
     
+    create_idt_entry(32, (uint32_t)irq0,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(33, (uint32_t)irq1,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(34, (uint32_t)irq2,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(35, (uint32_t)irq3,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(36, (uint32_t)irq4,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(37, (uint32_t)irq5,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(38, (uint32_t)irq6,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(39, (uint32_t)irq7,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(40, (uint32_t)irq8,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(41, (uint32_t)irq9,  IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(42, (uint32_t)irq10, IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(43, (uint32_t)irq11, IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(44, (uint32_t)irq12, IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(45, (uint32_t)irq13, IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(46, (uint32_t)irq14, IDT_FLAG_CODE_SEGMENT, flags);
+    create_idt_entry(47, (uint32_t)irq15, IDT_FLAG_CODE_SEGMENT, flags);
+
+
     create_idt_entry(128, (uint32_t)isr128, IDT_FLAG_CODE_SEGMENT, flags);
     create_idt_entry(177, (uint32_t)isr177, IDT_FLAG_CODE_SEGMENT, flags);
 }
