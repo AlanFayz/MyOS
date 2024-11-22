@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Common/bool.h"
-
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct {
    uint16_t offset_1;        // offset bits 0..15

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Common/bool.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct {
     uint32_t cr2;

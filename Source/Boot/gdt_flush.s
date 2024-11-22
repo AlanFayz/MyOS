@@ -19,6 +19,7 @@ gdt_flush:
 .flush:
     ret  
 
+
 tss_flush:
     mov ax, 0x2B
     ltr ax 

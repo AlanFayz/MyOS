@@ -48,8 +48,6 @@ void create_gdt_entry(uint8_t index, uint32_t limit, uint32_t address, uint8_t a
     gdt_descriptor_entries[index].available              = flags & 0x01;
 }
 
-
-
 void write_tss(uint32_t index, uint32_t ss0, uint32_t esp0)
 {
     uint32_t base = (uint32_t)&tss_entry;
@@ -65,7 +63,6 @@ void write_tss(uint32_t index, uint32_t ss0, uint32_t esp0)
     tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x10 | 0x3;
 
 }
-
 
 void init_gdt()
 {

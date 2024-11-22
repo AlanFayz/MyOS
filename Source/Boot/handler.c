@@ -41,10 +41,7 @@ void isr_handler(const interrupt_frame_t* frame)
 { 
     if(frame->int_number == 13)
     {
-        screen_print_string("need to fix you", 0);
-        screen_put_char('\n', 0);
-        screen_put_int(frame->error_code, 0);
-        screen_put_char('\n', 0);
+        halt();
         return;
     }
 

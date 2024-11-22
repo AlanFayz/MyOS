@@ -1,6 +1,6 @@
-C_SOURCES   = $(wildcard Source/Kernel/*.c  Source/Boot/*.c Source/Common/*.c)
-ASM_SOURCES = $(wildcard Source/Kernel/*.s  Source/Boot/*.s Source/Common/*.s)
-HEADERS     = $(wildcard Source/Kernel/*.h  Source/Boot/*.h Source/Common/*.h)
+C_SOURCES   = $(shell find Source/ -name "*.c")
+ASM_SOURCES = $(shell find Source/ -name "*.s")
+HEADERS     = $(shell find Source/ -name "*.h")
 
 C_OBJ   = ${C_SOURCES:.c=.o}
 ASM_OBJ = ${ASM_SOURCES:.s=.o}
@@ -17,8 +17,8 @@ LINK_FLAGS = -T linker.ld
 %.o: %.s
 	nasm $< ${ASM_FLAGS} -o $@
 
-Output/boot/kernel: ${OBJ}
-	i386-elf-ld ${LINK_FLAGS} -o $@ ${OBJ}
+Output/boot/kernel: ${OBJ} 
+	i386-elf-ld ${LINK_FLAGS} -o $@ ${OBJ} 
 
 Output/boot/MyOS.iso: Output/boot/kernel  
 	grub-mkrescue /usr/lib/grub/i386-pc -o $@ Output
