@@ -20,6 +20,7 @@ typedef struct {
 
 typedef struct {
     int16_t x, y;
+    uint16_t width, height;
     char character
 } gfx_character_t;
 
@@ -33,7 +34,7 @@ typedef struct {
 
     uint32_t pitch; //number of bytes per row
 
-    gfx_color_t* framebuffer_address;
+    uint32_t* framebuffer_address;
 } gfx_driver_info_t;
 
 void init_gfx(multiboot_info_t* mbi);

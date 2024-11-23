@@ -2,7 +2,6 @@
 
 #include "Common/low_level.h"
 #include "Common/memory.h"
-#include "Kernel/screen.h"
 
 #include "Common/Interrupts/isr.h"
 

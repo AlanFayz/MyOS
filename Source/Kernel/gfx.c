@@ -9,7 +9,7 @@ static gfx_driver_info_t gfx_driver;
 
 void init_gfx(multiboot_info_t* mbi)
 {
-    gfx_driver.framebuffer_address = (gfx_color_t*)mbi->framebuffer_addr;
+    gfx_driver.framebuffer_address = (uint32_t*)mbi->framebuffer_addr;
     gfx_driver.width       = mbi->framebuffer_width;
     gfx_driver.height      = mbi->framebuffer_height;
     gfx_driver.blue_shift  = mbi->framebuffer_blue_field_position;
@@ -35,8 +35,8 @@ void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color)
         return;
     }
 
-    gfx_color_t* pixel = gfx_driver.framebuffer_address + y * gfx_driver.pitch / sizeof(gfx_color_t) + x;
-    *pixel = color;
+    uint32_t* pixel = gfx_driver.framebuffer_address + y * gfx_driver.pitch / sizeof(uint32_t) + x;
+    *pixel = gfx_color_to_rgb(color);
 }
 
 void gfx_draw_rect(gfx_rect_2d_t rect, gfx_color_t color)
@@ -84,13 +84,21 @@ void gfx_draw_character(gfx_character_t character, gfx_color_t color)
 {
     char* bitmap = font8x8_basic[character.character];
 
-    for (int16_t y = 0; y < 8; y++) 
+
+    for (int16_t y = 0; y < character.height; y++) 
     {
-        for (int16_t x = 0; x < 8; x++) 
+        float normalised_y = (float)y / (float)character.height;
+        int8_t y_coord = (int8_t)(normalised_y * 8.0f);
+
+        for (int16_t x = 0; x < character.width; x++) 
         {
-            if (bitmap[x] & (1 << y))
+            float normalised_x = (float)x / (float)character.width;
+            int8_t x_coord = (int8_t)(normalised_x * 8.0f);
+
+            if (bitmap[y_coord] & (1 << x_coord))
             {
-                gfx_draw_pixel(character.x + y, character.y + x, color);
+                //swapped x and y coord to rotate by 90 degrees
+                gfx_draw_pixel(character.x + x, character.y + y, color);
             }
         }
     }

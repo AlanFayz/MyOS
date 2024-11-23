@@ -1,6 +1,7 @@
 #include "irq.h"
 
 #include "Common/low_level.h"
+#include "Kernel/System/print.h"
 
 void* irq_callbacks[16] = {
     0, 0, 0, 0, 0, 0, 0, 0,
@@ -26,21 +27,10 @@ void irq_handler(const interrupt_frame_t* frame)
 
 void irq_install_callback(int8_t index, irq_callback_t callback)
 {
-    if(index > 15) // ??
-    {
-        for(;;);
-    }
-
     irq_callbacks[index] = callback;
 }
 
 void irq_remove_callback(int8_t index)
 {
-    if(index > 15) // ??
-    {
-        for(;;);
-    }
-
-
     irq_callbacks[index] = 0;
 }

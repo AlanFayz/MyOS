@@ -1,6 +1,6 @@
 #include "isr.h"
 
-#include "Kernel/screen.h"
+#include "Kernel/System/print.h"
 
 const char* exception_messages[] = {
     "Division By Zero",
@@ -39,18 +39,14 @@ const char* exception_messages[] = {
 
 void isr_handler(const interrupt_frame_t* frame)
 { 
-    if(frame->int_number == 13)
+    if(frame->int_number < 32)
     {
-        halt();
-        return;
-    }
+        int16_t center_x = gfx_get_width() / 2;
+        int16_t center_y = gfx_get_height() / 2;
 
-    if(frame->int_number < 31)
-    {
-        screen_print_string(exception_messages[frame->int_number], 0);
-        screen_put_char('\n', 0);
-        screen_put_int(frame->error_code, 0);
-        screen_put_char('\n', 0);
+        gfx_color_t color = {0xFF, 0XFF, 0xFF};
+
+        print(center_x, center_y, color, exception_messages[frame->int_number]);
         for(;;);
     }
 }
