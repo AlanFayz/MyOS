@@ -36,9 +36,10 @@ void kernel_start()
 {
     gfx_color_t color = {0xFF, 0xAA, 0};
 
-    while(1)
+    for(;;)
     {
         print_int(100, 100, color, system_timer_get_ticks());
+        halt();
     }
 }
 

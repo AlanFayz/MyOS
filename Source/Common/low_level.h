@@ -18,5 +18,5 @@ void port_word_out(uint16_t port, uint16_t data);
 
 void halt();
 void pause();
-void enable_interrupts();
-void disable_interrupts();
+void sti();
+void cli();

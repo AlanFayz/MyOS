@@ -34,12 +34,12 @@ void pause()
   	__asm__("pause");
 }
 
-void enable_interrupts()
+void sti()
 {
     __asm__("sti");
 }
 
-void disable_interrupts()
+void cli()
 {
     __asm__("cli");
 }

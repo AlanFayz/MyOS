@@ -47,6 +47,9 @@ void isr_handler(const interrupt_frame_t* frame)
         gfx_color_t color = {0xFF, 0XFF, 0xFF};
 
         print(center_x, center_y, color, exception_messages[frame->int_number]);
-        for(;;);
+        for(;;)
+        {
+            halt();
+        }
     }
 }

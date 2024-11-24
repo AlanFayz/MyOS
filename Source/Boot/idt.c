@@ -6,6 +6,9 @@
 #include "Common/Interrupts/isr.h"
 
 #define DESCRIPTOR_TABLE_COUNT 256
+#define PIC_8086 0x01
+#define PIC1_OFFSET 0x20
+#define PIC2_OFFSET 0x28
 
 static interrupt_descriptor_table_entry   idt_entrys[DESCRIPTOR_TABLE_COUNT];
 static interrupt_descriptor_table_pointer idt_pointer;
@@ -25,25 +28,23 @@ static void create_idt_entry(int32_t index, uint32_t handler_address, uint16_t s
 // programmable interrupt computer
 static void init_pic()
 {
+    uint8_t mask1 = port_byte_in(PIC_DATA_0); 
+    uint8_t mask2 = port_byte_in(PIC_DATA_1);
+
     port_byte_out(PIC_COMMAND_0, PIC_INIT_MODE); 
     port_byte_out(PIC_COMMAND_1, PIC_INIT_MODE); 
 
-    //interrupt vector offsets to avoid conflictions with cpu exceptions (0x00-0x1F)
-    port_byte_out(PIC_DATA_0, 0x20);
-    port_byte_out(PIC_DATA_1, 0x28);
+    port_byte_out(PIC_DATA_0, PIC1_OFFSET);
+    port_byte_out(PIC_DATA_1, PIC2_OFFSET);
 
-    // each bit corresponds to an irq line, it indicates which one it should use to communicate 
-    // with the othher
-    port_byte_out(PIC_DATA_0, 0x04); // for master pic
-    port_byte_out(PIC_DATA_1, 0x02); // for slave pic
+    port_byte_out(PIC_DATA_0, 0x04); 
+    port_byte_out(PIC_DATA_1, 0x02); 
 
-    //0x01 indicates pics are in x86-compatible mode (their operating mode)
-    port_byte_out(PIC_DATA_0, 0x01);
-    port_byte_out(PIC_DATA_1, 0x01);
+    port_byte_out(PIC_DATA_0, PIC_8086);
+    port_byte_out(PIC_DATA_1, PIC_8086);
 
-    //disables interrupt masking
-    port_byte_out(PIC_DATA_0, 0);
-    port_byte_out(PIC_DATA_1, 0);
+    port_byte_out(PIC_DATA_0, mask1);
+    port_byte_out(PIC_DATA_1, mask2);
 }
 
 static void setup_interrupt_service_routine_entrys()
