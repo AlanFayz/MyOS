@@ -34,25 +34,12 @@ void gfx_test()
 
 void kernel_start() 
 {
-    gfx_character_t character;
-    character.character = 'A';
-    character.width  = 100;
-    character.height = 100;
-    character.x = 250;
-    character.y = 250;
-
-    gfx_color_t color;
-    color.r = 10;
-    color.g = 50;
-    color.b = 255;
-
-    gfx_draw_character(character, color);
-
-    print(20, 20, color, "hello");
-    print_float(20, 50, color, 4, 50.1);
+    gfx_color_t color = {0xFF, 0xAA, 0};
 
     while(1)
     {
-        print_int(500, 10, color, system_timer_get_ticks());
+        print_int(100, 100, color, system_timer_get_ticks());
     }
 }
+
+

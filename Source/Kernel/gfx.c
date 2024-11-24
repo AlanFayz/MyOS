@@ -1,10 +1,6 @@
 #include "gfx.h"
 #include "font.h"
 
-#define BLUE_COLOR_SHIFT   0
-#define GREEN_COLOR_SHIFT  8
-#define RED_COLOR_SHIFT    16
-
 static gfx_driver_info_t gfx_driver;
 
 void init_gfx(multiboot_info_t* mbi)
@@ -97,7 +93,6 @@ void gfx_draw_character(gfx_character_t character, gfx_color_t color)
 
             if (bitmap[y_coord] & (1 << x_coord))
             {
-                //swapped x and y coord to rotate by 90 degrees
                 gfx_draw_pixel(character.x + x, character.y + y, color);
             }
         }

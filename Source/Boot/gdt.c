@@ -42,10 +42,10 @@ void create_gdt_entry(uint8_t index, uint32_t limit, uint32_t address, uint8_t a
     gdt_descriptor_entries[index].descriptor_privilege_level = (access >> 5) & 0x03;
     gdt_descriptor_entries[index].present                = (access >> 7) & 0x01;
 
-    gdt_descriptor_entries[index].granularity            = (flags >> 3) & 0x01;
-    gdt_descriptor_entries[index].size                   = (flags >> 2) & 0x01;
-    gdt_descriptor_entries[index].reserved               = 0;
-    gdt_descriptor_entries[index].available              = flags & 0x01;
+    gdt_descriptor_entries[index].granularity   = (flags >> 3) & 0x01;
+    gdt_descriptor_entries[index].size          = (flags >> 2) & 0x01;
+    gdt_descriptor_entries[index].reserved      = 0;
+    gdt_descriptor_entries[index].available     = flags & 0x01;
 }
 
 void write_tss(uint32_t index, uint32_t ss0, uint32_t esp0)
