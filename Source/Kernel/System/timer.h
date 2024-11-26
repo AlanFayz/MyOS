@@ -4,6 +4,6 @@
 
 void init_system_timer();
 
-uint32_t system_timer_get_ticks();
+uint64_t system_timer_get_ticks();
 
 void sleep(uint32_t time_s);

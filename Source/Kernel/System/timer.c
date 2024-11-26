@@ -11,7 +11,7 @@
 
 #define PIT_CALL_FREQUENCY 100
 
-static volatile uint32_t system_ticks;
+static volatile uint64_t system_ticks;
 
 void timer_callback(const interrupt_frame_t* frame)
 {
@@ -30,17 +30,18 @@ void init_system_timer()
     port_byte_out(PIT_CHANNEL, (divisor >> 8) & 0xFF); //high bytes
 }
 
-uint32_t system_timer_get_ticks()
+uint64_t system_timer_get_ticks()
 {
     return system_ticks;
 }
 
 void sleep(uint32_t time_s)
 {
-    uint32_t target_ticks = system_ticks + PIT_CALL_FREQUENCY * time_s;  
+    uint64_t target_ticks = system_ticks + PIT_CALL_FREQUENCY * (uint64_t)time_s;  
 
     while (system_ticks < target_ticks)
     {
         hlt();  
     }
 }
+

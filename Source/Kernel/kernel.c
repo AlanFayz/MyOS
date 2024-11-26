@@ -18,6 +18,7 @@ void kernel_start()
 
     for(;;)
     {
+        sleep(5);
         print(300, 200, color, "0 key pressed");
     }
 }
