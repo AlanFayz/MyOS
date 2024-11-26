@@ -1,0 +1,33 @@
+#pragma once 
+
+typedef enum {
+    KEY_STATUS_RELEASED = 0,
+    KEY_STATUS_PRESSED, 
+    KEY_STATUS_HELD, 
+    KEY_STATUS_ERROR = 0xFFFFFFFF
+} key_status_t;
+
+//99% wrong here but works with letters and numbers TODO
+typedef enum {
+    KEY_NULL, KEY_ESCAPE,
+    KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0,
+    KEY_MINUS, KEY_EQUALS, KEY_BACKSPACE, KEY_TAB,
+    
+    KEY_Q, KEY_W, KEY_E, KEY_R, KEY_T, KEY_Y, KEY_U, KEY_I, KEY_O, KEY_P,
+    KEY_LEFTBRACKET, KEY_RIGHTBRACKET, KEY_BACKSLASH, KEY_END, 
+
+    KEY_A, KEY_S, KEY_D, KEY_F, KEY_G, KEY_H, KEY_J, KEY_K, KEY_L,
+    KEY_SEMICOLON, KEY_APOSTROPHE, KEY_ENTER, KEY_PAGE_UP, KEY_RES0,
+
+    KEY_Z, KEY_X, KEY_C, KEY_V, KEY_B, KEY_N, KEY_M, KEY_COMMA, KEY_PERIOD, KEY_SLASH,
+    KEY_RSHIFT, KEY_UP_ARROW, KEY_PAGE_DOWN, 
+    
+    KEY_LCRTL, KEY_OS_KEY, KEY_LALT, KEY_SPACE, KEY_RALT, KEY_FN, KEY_RCRTL, KEY_LEFT_ARROW, 
+    KEY_DOWN_ARROW, KEY_RIGHT_ARROW,
+    
+    KEY_MAX 
+} key_t;
+
+void init_keyboard();
+
+key_status_t get_key_status(key_t key);

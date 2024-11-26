@@ -1,10 +1,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "Common/low_level.h"
-
 #include "System/timer.h"
 #include "System/print.h"
+#include "System/keyboard.h"
+
+#include "Common/cpu.h"
 
 #include "gfx.h"
 
@@ -32,6 +33,7 @@ void gfx_test()
     }
 }
 
+
 void kernel_start() 
 {
     gfx_color_t color = {0xFF, 0xAA, 0};
@@ -41,14 +43,11 @@ void kernel_start()
 
     for(;;)
     {
-        print_int(x, y, color, system_timer_get_ticks());
-        halt();
-
-        x += 35;
-        if(!(x % 600))
+        hlt();
+    
+        if(get_key_status(KEY_U) == KEY_STATUS_PRESSED)
         {
-            y = (y + 35) % 600;
-            x = 0;
+            print(300, 200, color, "0 key pressed");
         }
     }
 }

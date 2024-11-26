@@ -1,14 +1,11 @@
 #include "idt.h"
 
-#include "Common/low_level.h"
+#include "Common/cpu.h"
 #include "Common/memory.h"
 
 #include "Common/Interrupts/isr.h"
 
 #define DESCRIPTOR_TABLE_COUNT 256
-#define PIC_8086 0x01
-#define PIC1_OFFSET 0x20
-#define PIC2_OFFSET 0x28
 
 static interrupt_descriptor_table_entry   idt_entrys[DESCRIPTOR_TABLE_COUNT];
 static interrupt_descriptor_table_pointer idt_pointer;
@@ -28,20 +25,20 @@ static void create_idt_entry(int32_t index, uint32_t handler_address, uint16_t s
 // programmable interrupt computer
 static void init_pic()
 {
-    port_byte_out(PIC_COMMAND_0, PIC_INIT_MODE); 
-    port_byte_out(PIC_COMMAND_1, PIC_INIT_MODE); 
+    port_byte_out(PIC1, PIC_INIT_MODE); 
+    port_byte_out(PIC2, PIC_INIT_MODE); 
 
-    port_byte_out(PIC_DATA_0, PIC1_OFFSET);
-    port_byte_out(PIC_DATA_1, PIC2_OFFSET);
+    port_byte_out(PIC1_DATA, PIC1_OFFSET);
+    port_byte_out(PIC2_DATA, PIC2_OFFSET);
 
-    port_byte_out(PIC_DATA_0, 0x04); 
-    port_byte_out(PIC_DATA_1, 0x02); 
+    port_byte_out(PIC1_DATA, PIC_ICW3_SLAVE_ON_IRQ2); 
+    port_byte_out(PIC2_DATA, PIC_ICW3_SLAVE_IDENTITY); 
 
-    port_byte_out(PIC_DATA_0, PIC_8086);
-    port_byte_out(PIC_DATA_1, PIC_8086);
+    port_byte_out(PIC1_DATA, PIC_MODE_8086);
+    port_byte_out(PIC2_DATA, PIC_MODE_8086);
 
-    port_byte_out(PIC_DATA_0, 0);
-    port_byte_out(PIC_DATA_1, 0);
+    port_byte_out(PIC1_DATA, PIC_MASK);
+    port_byte_out(PIC2_DATA, PIC_MASK);
 }
 
 static void setup_interrupt_service_routine_entrys()

@@ -1,6 +1,6 @@
 #include "irq.h"
 
-#include "Common/low_level.h"
+#include "Common/cpu.h"
 #include "Kernel/System/print.h"
 
 #define PIC1      0x20

@@ -1,7 +1,5 @@
 #include "print.h"
 
-#include <stdarg.h>
-
 #define SPACING 25
 
 static gfx_character_t default_character = {

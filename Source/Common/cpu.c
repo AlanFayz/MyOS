@@ -1,4 +1,4 @@
-#include "low_level.h"
+#include "cpu.h"
 
 uint8_t port_byte_in(uint16_t port)
 {
@@ -24,14 +24,13 @@ void port_word_out(uint16_t port, uint16_t data)
     __asm__("out %%ax, %%dx" : : "a" (data), "d" (port));
 }
 
-void halt()
+void panic()
 {
-	__asm__("hlt");
-}
-
-void pause()
-{
-  	__asm__("pause");
+    //maybe print something?
+    for(;;)
+    {
+        hlt();
+    }
 }
 
 void sti()
@@ -42,4 +41,9 @@ void sti()
 void cli()
 {
     __asm__("cli");
+}
+
+void hlt()
+{
+	__asm__("hlt");
 }
