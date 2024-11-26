@@ -7,7 +7,9 @@
 #define PIT_FREQUENCY 1193182
 #define PIT_CONTROL 0x43
 #define PIT_CHANNEL 0x40
-#define PIT_FLAGS 0x36
+#define PIT_FLAGS   0x36
+
+#define PIT_CALL_FREQUENCY 100
 
 static volatile uint32_t system_ticks;
 
@@ -18,8 +20,7 @@ void timer_callback(const interrupt_frame_t* frame)
 
 void init_system_timer()
 {
-    const uint32_t desired_frequency = 100; //(hz)
-    const uint32_t divisor = PIT_FREQUENCY / desired_frequency;
+    const uint32_t divisor = PIT_FREQUENCY / PIT_CALL_FREQUENCY;
 
     system_ticks = 0;
     irq_install_callback(0, timer_callback);
@@ -32,4 +33,14 @@ void init_system_timer()
 uint32_t system_timer_get_ticks()
 {
     return system_ticks;
+}
+
+void sleep(uint32_t time_s)
+{
+    uint32_t target_ticks = system_ticks + PIT_CALL_FREQUENCY * time_s;  
+
+    while (system_ticks < target_ticks)
+    {
+        hlt();  
+    }
 }
