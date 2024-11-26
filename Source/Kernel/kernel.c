@@ -35,11 +35,21 @@ void gfx_test()
 void kernel_start() 
 {
     gfx_color_t color = {0xFF, 0xAA, 0};
+    
+    int x = 0;
+    int y = 0;
 
     for(;;)
     {
-        print_int(100, 100, color, system_timer_get_ticks());
+        print_int(x, y, color, system_timer_get_ticks());
         halt();
+
+        x += 35;
+        if(!(x % 600))
+        {
+            y = (y + 35) % 600;
+            x = 0;
+        }
     }
 }
 

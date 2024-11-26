@@ -28,9 +28,6 @@ static void create_idt_entry(int32_t index, uint32_t handler_address, uint16_t s
 // programmable interrupt computer
 static void init_pic()
 {
-    uint8_t mask1 = port_byte_in(PIC_DATA_0); 
-    uint8_t mask2 = port_byte_in(PIC_DATA_1);
-
     port_byte_out(PIC_COMMAND_0, PIC_INIT_MODE); 
     port_byte_out(PIC_COMMAND_1, PIC_INIT_MODE); 
 
@@ -43,8 +40,8 @@ static void init_pic()
     port_byte_out(PIC_DATA_0, PIC_8086);
     port_byte_out(PIC_DATA_1, PIC_8086);
 
-    port_byte_out(PIC_DATA_0, mask1);
-    port_byte_out(PIC_DATA_1, mask2);
+    port_byte_out(PIC_DATA_0, 0);
+    port_byte_out(PIC_DATA_1, 0);
 }
 
 static void setup_interrupt_service_routine_entrys()

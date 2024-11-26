@@ -19,27 +19,24 @@ irq_callback_t irq_callbacks[16] = {
 
 void irq_handler(const interrupt_frame_t* frame)
 {
-    if(frame->int_number >= 40)
-    {
-        port_byte_out(PIC2, EOI);
-    }
-
-    port_byte_out(PIC1, EOI);
-
-
     irq_callback_t handler = irq_callbacks[frame->int_number - 32];
 
     if(handler)
     {
         handler(frame);
     }
+
+    if(frame->int_number >= 40)
+    {
+        port_byte_out(PIC2, EOI);
+    }
+
+    port_byte_out(PIC1, EOI);
 }
 
 void irq_install_callback(int8_t index, irq_callback_t callback)
 {
-    cli();
     irq_callbacks[index] = callback;
-    sti();
 }
 
 void irq_remove_callback(int8_t index)

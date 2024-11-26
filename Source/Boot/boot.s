@@ -53,8 +53,7 @@ section .text
         call init_idt     ; interrupt descriptor table
         call init_kernel  
 
-        popf 
-        popf
+        add esp, 8
 
         call kernel_start 
         

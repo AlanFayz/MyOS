@@ -10,7 +10,7 @@ static volatile uint32_t system_ticks;
 
 void timer_callback(const interrupt_frame_t* frame)
 {
-    system_ticks++; 
+    system_ticks++;
 }
 
 void init_system_timer()

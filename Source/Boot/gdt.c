@@ -61,7 +61,7 @@ void write_tss(uint32_t index, uint32_t ss0, uint32_t esp0)
 
     tss_entry.cs = 0x08 | 0x3;
     tss_entry.ss = tss_entry.ds = tss_entry.es = tss_entry.fs = tss_entry.gs = 0x10 | 0x3;
-
+    tss_entry.iomap_base = sizeof(tss_entry);
 }
 
 void init_gdt()
