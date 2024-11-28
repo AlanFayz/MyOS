@@ -35,6 +35,17 @@ void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color)
     *pixel = gfx_color_to_rgb(color);
 }
 
+void gfx_clear(gfx_color_t color)
+{
+    for(uint16_t y = 0; y < gfx_driver.height; y++)
+    {
+        for(uint16_t x = 0; x < gfx_driver.width; x++)
+        {
+            gfx_draw_pixel(x, y, color);
+        }
+    }
+}
+
 void gfx_draw_rect(gfx_rect_2d_t rect, gfx_color_t color)
 {
     int16_t min_x = rect.x - rect.width / 2;

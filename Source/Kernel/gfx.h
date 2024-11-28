@@ -43,8 +43,10 @@ uint32_t gfx_get_width();
 uint32_t gfx_get_height();
 
 void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color);
+void gfx_clear(gfx_color_t color);
 void gfx_draw_rect(gfx_rect_2d_t rect,    gfx_color_t color);
 void gfx_draw_circle(gfx_circle_t circle, gfx_color_t color);
 void gfx_draw_character(gfx_character_t character, gfx_color_t color);
 
 uint32_t gfx_color_to_rgb(gfx_color_t color);
+

@@ -3,6 +3,7 @@
 
 #include "System/timer.h"
 #include "System/keyboard.h"
+#include "System/mouse.h"
 
 #include "Common/cpu.h"
 
@@ -11,18 +12,17 @@
 
 void init_kernel(uint32_t magic, uint32_t address)
 {
-    multiboot_info_t* mbi;
-
     if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
     {
         panic();
     }
 
-    mbi = (multiboot_info_t*)address;
+    multiboot_info_t* mbi = (multiboot_info_t*)address;
 
     init_gfx(mbi);
     init_system_timer();
     init_keyboard();
+    init_mouse();
 }
 
 

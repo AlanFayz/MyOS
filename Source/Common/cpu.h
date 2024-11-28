@@ -31,3 +31,4 @@ void panic();
 void sti();
 void cli();
 void hlt();
+void pause();

@@ -1,6 +1,6 @@
 [bits 32]
 
-%define KERNEL_DATA_SEG 0x10
+%define DATA_SEGMENT 0x10
 
 %macro ISR_NO_ERROR_CODE 1
     global isr%1
@@ -99,7 +99,7 @@ isr_common:
     mov eax, cr2 
     push eax 
 
-    mov ax, KERNEL_DATA_SEG
+    mov ax, DATA_SEGMENT
     mov ds, ax 
     mov es, ax 
     mov fs, ax 
@@ -131,7 +131,7 @@ irq_common:
     mov eax, cr2 
     push eax 
 
-    mov ax, KERNEL_DATA_SEG
+    mov ax, DATA_SEGMENT
     mov ds, ax 
     mov es, ax 
     mov fs, ax 

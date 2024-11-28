@@ -1,5 +1,7 @@
 #include "cpu.h"
 
+#include "Kernel/System/print.h"
+
 uint8_t port_byte_in(uint16_t port)
 {
     uint8_t result;
@@ -26,7 +28,9 @@ void port_word_out(uint16_t port, uint16_t data)
 
 void panic()
 {
-    //maybe print something?
+    gfx_color_t color = {0xFF, 0xFF, 0};
+    print(500, 500, color, "panic");
+
     for(;;)
     {
         hlt();
@@ -46,4 +50,9 @@ void cli()
 void hlt()
 {
 	__asm__("hlt");
+}
+
+void pause()
+{
+    __asm__("pause");
 }
