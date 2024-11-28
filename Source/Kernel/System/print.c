@@ -32,7 +32,7 @@ void print_float(int16_t x, int16_t y, gfx_color_t color, int8_t dp, double valu
         value *= 10;
 
         print_char(x, y, color, (char)value + '0');
-        x += 30;
+        x += SPACING;
 
         value -= (int32_t)value;
         dp--;
@@ -114,16 +114,7 @@ void print_hex(int16_t x, int16_t y, gfx_color_t color, uint32_t value)
           uint32_t temp = value >> bit_count;
           temp &= 0xF;
 
-          char val = 0;
-          if(temp < 10)
-          {
-              val = (char)temp + '0';
-          }
-          else
-          {
-             val = (char)temp + 'A' - 10;
-          }
-
+          char val = temp < 10 ? (char)temp + '0' : (char)temp + 'A' - 10;
           print_char(x, y, color, val);
           x += SPACING;
     }

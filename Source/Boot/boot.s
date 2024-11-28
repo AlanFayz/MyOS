@@ -14,6 +14,9 @@
 %define HEIGHT 768 
 %define DEPTH  32
 
+%define CODE_SEGMENT 0x08
+%define DATA_SEGMENT 0x10
+
 section .multiboot 
     align 4
     dd MULTIBOOT_MAGIC_NUMBER
@@ -31,12 +34,16 @@ section .bss
 
 section .text 
     global start 
+    global gdt_flush 
+    global tss_flush
+    global idt_flush
 
     extern kernel_start
     extern init_kernel 
     extern init_gdt
     extern init_idt
 
+    ; entry after multiboot finishes bootloading
     start:
         cli ; clear any previous interrupts
 
@@ -57,10 +64,40 @@ section .text
 
         call kernel_start 
         
-    panic:
+    fall:
         cli
         hlt
-        jmp panic
+        jmp fall
+
+    ; loads the global descriptor table and adjusts registers.
+    gdt_flush:
+        mov eax, [esp + 4]
+        lgdt [eax]
+
+        mov eax, DATA_SEGMENT
+        mov ds, ax 
+        mov es, ax 
+        mov fs, ax 
+        mov gs, ax 
+        mov ss, ax
+
+        jmp CODE_SEGMENT:long_jump
+
+    long_jump:
+        ret  
+
+    ; loads task state segment 
+    tss_flush:
+        mov ax, 0x2B
+        ltr ax 
+        ret
+
+    ; loads interrupt descriptor table
+    idt_flush:
+        mov eax, [esp + 4]
+        lidt [eax]
+        sti 
+        ret 
 
     
 

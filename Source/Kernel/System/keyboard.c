@@ -44,14 +44,14 @@ void keyboard_callback(const interrupt_frame_t* frame)
     {
         uint8_t key = key_status & KEY_MASK;
         set_key_status(key, KEY_STATUS_RELEASED);
+
+        return;
     }
+     
+    if(keys[key_status] == KEY_STATUS_RELEASED)
+        set_key_status(key_status, KEY_STATUS_PRESSED);
     else 
-    {
-        if(keys[key_status] == KEY_STATUS_RELEASED)
-            set_key_status(key_status, KEY_STATUS_PRESSED);
-        else 
-            set_key_status(key_status, KEY_STATUS_HELD);
-    }
+        set_key_status(key_status, KEY_STATUS_HELD);   
 }
 
 void init_keyboard()
