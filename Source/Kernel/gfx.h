@@ -21,7 +21,7 @@ typedef struct {
 typedef struct {
     int16_t x, y;
     uint16_t width, height;
-    char character
+    char character;
 } gfx_character_t;
 
 typedef struct {

@@ -52,7 +52,7 @@ section .text
     start:
         cli ; clear any previous interrupts
 
-        mov esp, stack_top 
+        mov esp, stack_top ; stack grows downwards 
     
         ; resets eflags register
         push 0

@@ -11,8 +11,8 @@
 
 static uint32_t tiles[WIDTH * HEIGHT] = {0};
 
-static uint32_t tile_width  = 10;
-static uint32_t tile_height = 10;
+static uint32_t tile_width  = 15;
+static uint32_t tile_height = 15;
 
 void set_tile(uint32_t x, uint32_t y)
 {

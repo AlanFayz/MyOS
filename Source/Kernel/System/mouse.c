@@ -2,7 +2,6 @@
 
 #include "Common/cpu.h"
 #include "Common/Interrupts/irq.h"
-
 #include "print.h"
 
 #define PS2      0x64 
@@ -110,4 +109,18 @@ int32_t mouse_get_x()
 int32_t mouse_get_y()
 {
     return mouse_y;
+}
+
+void draw_cursor()
+{
+    gfx_rect_2d_t cursor;
+    gfx_color_t color = {0xAA, 0, 0xFF};
+
+    cursor.width = 20;
+    cursor.height = 20;
+
+    cursor.x = mouse_x;
+    cursor.y = gfx_get_height() - mouse_y;
+
+    gfx_draw_rect(cursor, color);
 }

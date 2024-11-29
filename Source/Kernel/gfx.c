@@ -110,6 +110,7 @@ void gfx_draw_character(gfx_character_t character, gfx_color_t color)
             float normalised_x = (float)x / (float)character.width;
             int8_t x_coord = (int8_t)(normalised_x * 8.0f);
 
+            //we swap x and y coord to rotate the character upwards
             if (bitmap[y_coord] & (1 << x_coord))
             {
                 gfx_draw_pixel(character.x + x, character.y + y, color);

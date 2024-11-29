@@ -23,6 +23,7 @@ void init_system_timer()
     const uint32_t divisor = PIT_FREQUENCY / PIT_CALL_FREQUENCY;
 
     system_ticks = 0;
+
     irq_install_callback(0, timer_callback);
 
     port_byte_out(PIT_CONTROL, PIT_FLAGS);
@@ -33,6 +34,11 @@ void init_system_timer()
 uint64_t system_timer_get_ticks()
 {
     return system_ticks;
+}
+
+double system_timer_get_ticks_seconds()
+{
+    return system_ticks * (1.0 / PIT_CALL_FREQUENCY);
 }
 
 void sleep(uint32_t time_s)
