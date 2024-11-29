@@ -111,16 +111,33 @@ int32_t mouse_get_y()
     return mouse_y;
 }
 
+// uhmmm, yeah I tried my best...
+static uint8_t cursor_basic[8] = {
+    0b00000001, 
+    0b00000011, 
+    0b00000111, 
+    0b00001111, 
+    0b00011011, 
+    0b00110011, 
+    0b01000011, 
+    0b00000001  
+};
+
 void draw_cursor()
 {
-    gfx_rect_2d_t cursor;
-    gfx_color_t color = {0xAA, 0, 0xFF};
+    gfx_color_t color = {0xFF, 0, 0xFF};
 
-    cursor.width = 20;
-    cursor.height = 20;
+    uint16_t cursor_x = mouse_x;
+    uint16_t cursor_y = gfx_get_height() - mouse_y;
 
-    cursor.x = mouse_x;
-    cursor.y = gfx_get_height() - mouse_y;
-
-    gfx_draw_rect(cursor, color);
+    for(uint8_t y = 0; y < 8; y++)
+    {
+        for(uint8_t x = 0; x < 8; x++)
+        {
+            if(cursor_basic[y] & (1 << x))
+            {
+                gfx_draw_pixel(cursor_x + x, cursor_y + y, color);
+            }
+        }
+    }
 }
