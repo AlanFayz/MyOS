@@ -29,8 +29,13 @@ section .multiboot
 section .bss 
     align 16
     stack_bottom:
-        resb 16384
+        resb 1048576 
     stack_top:
+
+    ; allocate memory for backbuffer as we don't have malloc, heap section should go here in the future
+    back_buffer_bottom: 
+        resb WIDTH * HEIGHT * DEPTH
+    back_buffer_top:
 
 section .text 
     global start 
@@ -55,12 +60,13 @@ section .text
 
         push ebx ; multiboot information struct pointer
         push eax ; multiboot magic number
+        push back_buffer_bottom
 
         call init_gdt     ; global descriptor table
         call init_idt     ; interrupt descriptor table
         call init_kernel  
 
-        add esp, 8
+        add esp, 12
 
         call kernel_start 
         
@@ -92,7 +98,7 @@ section .text
         ltr ax 
         ret
 
-    ; loads interrupt descriptor table
+    ; loads interrupt descriptor table and enables interrupts
     idt_flush:
         mov eax, [esp + 4]
         lidt [eax]

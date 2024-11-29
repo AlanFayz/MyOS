@@ -35,13 +35,15 @@ typedef struct {
     uint32_t pitch; //number of bytes per row
 
     uint32_t* framebuffer_address;
+    uint32_t* backbuffer_address;
 } gfx_driver_info_t;
 
-void init_gfx(multiboot_info_t* mbi);
+void init_gfx(const uint32_t* backbuffer, const multiboot_info_t* mbi);
 
 uint32_t gfx_get_width();
 uint32_t gfx_get_height();
 
+void gfx_swap_buffers();
 void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color);
 void gfx_clear(gfx_color_t color);
 void gfx_draw_rect(gfx_rect_2d_t rect,    gfx_color_t color);

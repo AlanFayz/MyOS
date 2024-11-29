@@ -10,7 +10,7 @@
 
 #include <stdint.h>
 
-void init_kernel(uint32_t magic, uint32_t address)
+void init_kernel(uint32_t* backbuffer, uint32_t magic, uint32_t address)
 {
     if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
     {
@@ -19,7 +19,7 @@ void init_kernel(uint32_t magic, uint32_t address)
 
     multiboot_info_t* mbi = (multiboot_info_t*)address;
 
-    init_gfx(mbi);
+    init_gfx(backbuffer, mbi);
     init_system_timer();
     init_keyboard();
     init_mouse();

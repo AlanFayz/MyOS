@@ -1,11 +1,14 @@
 #include "gfx.h"
 #include "font.h"
 
+#include "Common/memory.h"
+
 static gfx_driver_info_t gfx_driver;
 
-void init_gfx(multiboot_info_t* mbi)
+void init_gfx(const uint32_t* backbuffer, const multiboot_info_t* mbi)
 {
     gfx_driver.framebuffer_address = (uint32_t*)mbi->framebuffer_addr;
+    gfx_driver.backbuffer_address = backbuffer;
     gfx_driver.width       = mbi->framebuffer_width;
     gfx_driver.height      = mbi->framebuffer_height;
     gfx_driver.blue_shift  = mbi->framebuffer_blue_field_position;
@@ -24,6 +27,11 @@ uint32_t gfx_get_height()
     return gfx_driver.height;
 }
 
+void gfx_swap_buffers()
+{
+    memcpy(gfx_driver.framebuffer_address, gfx_driver.backbuffer_address, gfx_driver.width * gfx_driver.height * sizeof(uint32_t));
+}
+
 void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color)
 {
     if(x >= gfx_driver.width || y >= gfx_driver.height || x < 0 || y < 0) 
@@ -31,7 +39,7 @@ void gfx_draw_pixel(int16_t x, int16_t y, gfx_color_t color)
         return;
     }
 
-    uint32_t* pixel = gfx_driver.framebuffer_address + y * gfx_driver.pitch / sizeof(uint32_t) + x;
+    uint32_t* pixel = gfx_driver.backbuffer_address + y * gfx_driver.pitch / sizeof(uint32_t) + x;
     *pixel = gfx_color_to_rgb(color);
 }
 
